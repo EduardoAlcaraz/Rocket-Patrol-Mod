@@ -5,19 +5,20 @@ class Rocket extends Phaser.GameObjects.Sprite {
         // add object to existing scene
         scene.add.existing(this);
         this.isFiring = false;
-        this.moveSpeed = 2;
-
+        this.moveSpeed = -2;
         this.sfxRocket = scene.sound.add('sfx_rocket'); // add rocket sfx
+
+        this.angle += 180;
     }
 
     update(){
         //left movement
         if(!this.isFiring){
-            if(keyLEFT.isDown && this.x>= borderUISize + this.width){
-                this.x -= this.moveSpeed;
-            }
-            else if (keyRIGHT.isDown && this.x <= game.config.width - borderUISize - this.width){
+            if(keyLEFT.isDown && this.x>= this.width){
                 this.x += this.moveSpeed;
+            }
+            else if (keyRIGHT.isDown && this.x <= game.config.width - this.width){
+                this.x -= this.moveSpeed;
             }
         }
         //fire button
@@ -26,19 +27,20 @@ class Rocket extends Phaser.GameObjects.Sprite {
             this.sfxRocket.play();
         }
         //move up when fired
-        if(this.isFiring && this.y >= borderUISize * 3 + borderPadding){
+        if(this.isFiring && this.y <= game.config.height + this.height){
             this.y -= this.moveSpeed;
         }
         //reset on miss
-        if(this.y <= borderUISize * 3 + borderPadding){
-            this.isFiring = false;
-            this.y = game.config.height - borderUISize - borderPadding;
-        }
+         if(this.y >= game.config.height + this.height){
+             this.isFiring = false;
+             this.reset();
+             //this.y = game.config.height - borderUISize - borderPadding;
+         }
     }
 
     // reset rocket to "ground"
     reset(){
         this.isFiring = false;
-        this.y = game.config.height - borderUISize - borderPadding;
+        this.y = borderUISize;
     }
 }

@@ -13,3 +13,5 @@ let keyF, keyR, keyA, keyS, keyD, keyLEFT, keyRIGHT, keyDOWN;
 // set UI sizes
 let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
+
+// Point breakdown in README

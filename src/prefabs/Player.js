@@ -5,16 +5,22 @@ class Player extends Phaser.GameObjects.Sprite {
         // add object to existing scene
         scene.add.existing(this);
         this.isFiring = false;
-        this.moveSpeed = -3;
+        this.moveSpeed = -2;
         this.sfxPlayer = scene.sound.add('sfx_rocket'); // add rocket sfx
         this.left = left;
         this.right = right;
         this.down = down;
 
-        this.angle += 180;
+        //this.width *= 0.06;
+        //this.height *= 0.06;
+        console.log(this.width);
+        // if(this.texture.key == "hook2"){
+        //     this.flipX = true;
+        // }
     }
 
     update(){
+        console.log(this.height, this.y);
         //left movement
         if(!this.isFiring){
             if(this.left.isDown && this.x>= this.width){
@@ -35,7 +41,7 @@ class Player extends Phaser.GameObjects.Sprite {
             this.y -= this.moveSpeed;
         }
         //reset on miss
-         if(this.y >= game.config.height + this.height){
+         if(this.y >= borderPadding *2){
              this.isFiring = false;
              this.reset();
              //this.y = game.config.height - borderUISize - borderPadding;
@@ -45,6 +51,6 @@ class Player extends Phaser.GameObjects.Sprite {
     // reset player to "ground"
     reset(){
         this.isFiring = false;
-        this.y = borderUISize;
+        this.y = borderUISize - game.config.height;
     }
 }

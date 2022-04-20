@@ -6,8 +6,7 @@ class Play extends Phaser.Scene{
 
     preload() {
         // load images/tile sprites
-        //this.load.image('player1', './assets/player1.png');
-        //this.load.image('player2', './assets/player2.png');
+
         this.load.image('hook1', './assets/hook1.png');
         this.load.image('hook2', './assets/hook2.png');
         this.load.image('fish1', './assets/fish1.png');
@@ -15,29 +14,18 @@ class Play extends Phaser.Scene{
         this.load.image('water', './assets/water.png');
         this.load.image('sand', './assets/sand.png');
 
-
-
         // load sprite
-        this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+        this.load.spritesheet('bubbles', './assets/bubbles.png', {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 3});
+
       }
     
 
     create(){
         // place tile sprite
-        //this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
         this.water = this.add.tileSprite(0, 0, 640, 480, 'water').setOrigin(0, 0);
         this.sand = this.add.tileSprite(0, 430, 640, 50, 'sand').setOrigin(0, 0);
 
 
-
-        // green UI background
-        //this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
-        // white borders
-        //this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
-        //this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
-        //this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
-        //this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
-        
         
         // define keys
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -62,11 +50,12 @@ class Play extends Phaser.Scene{
 
 
 
+
         // animation config
         this.anims.create({
-            key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9, first: 0}),
-            frameRate: 30
+            key: 'bubble',
+            frames: this.anims.generateFrameNumbers('bubbles', { start: 0, end: 3, first: 0}),
+            frameRate: 20
         });
 
         // initialize score
@@ -75,36 +64,58 @@ class Play extends Phaser.Scene{
 
         //display score
         let scoreConfig = {
-            fontFamily: 'Tahoma',
-            fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
-            align: 'right',
+            fontFamily: 'Arial',
+            fontSize: '33px',
+            //backgroundColor: '#f6d265',
+            stroke: '#000000',
+            strokeThickness: '4',
+            color: '#000000',
+            align: 'center',
             padding: {
                 top: 5,
                 bottom: 5,
             },
             fixedWidth: 0
         }
-        this.scoreLeft = this.add.text(borderUISize, game.config.height - borderUISize, 0, scoreConfig);
-        this.scoreRight = this.add.text(game.config.width - borderUISize*2.4, game.config.height - borderUISize, 0, scoreConfig);
 
+        let endConfig = {
+            fontFamily: 'Arial',
+            fontSize: '28px',
+            backgroundColor: '#f6d265',
+            color: '#843605',
+            align: 'center',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 0
+        }
+
+
+        //Display Scores        
+        scoreConfig.stroke= '#452634';
+        this.scoreLeft = this.add.text(borderUISize, game.config.height - borderUISize*1.3, 0, scoreConfig);
+
+        scoreConfig.stroke= '#014421';
+        this.scoreRight = this.add.text(game.config.width - borderUISize*2.4, game.config.height - borderUISize*1.3, 0, scoreConfig);
+
+        //Display Timer
+        scoreConfig.stroke= '#f6d265';
+        this.timerCenter = this.add.text(game.config.width /2, game.config.height - borderUISize*1.3, 0, scoreConfig);
         
         //GAME OVER flag
         this.gameOver = false;
 
         //60 second clock
         this.clock  = this.time.delayedCall(game.settings.gameTimer, () =>{
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or <- for Menu', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', endConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, '(R) for Restart\n(<-) for Menu', endConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
 
         //Initialize a timer
         this.countdown = Math.ceil(this.clock.getRemainingSeconds());
         
-        //Display Timer
-        this.timerCenter = this.add.text(game.config.width /2, game.config.height - borderUISize, this.countdown, scoreConfig);
     }
 
     update() {
@@ -173,24 +184,10 @@ class Play extends Phaser.Scene{
 
     checkCollision(player, ship) {
         // simple AABB checking
-        if(player.x < ship.x + ship.width){
-            console.log("1 TRUE: player.x < ship.x + ship.width", player.x, "<" ,ship.x, "+" ,ship.width);
-        }
-        if(player.x + player.width > ship.x){
-            console.log("2 TRUE: player.x + player.width > ship.x", player.x, "+" ,player.width, ">", ship.x);
-        }
-        if(player.y+480 < ship.y + ship.height){
-            console.log("3 TRUE: player.y +480 < ship.y + ship.height", player.y+480, "<" ,ship.y, "+" ,ship.height);
-        }
-        if(player.height + player.y > ship. y){
-            console.log("4 TRUE: player.height + player.y > ship. y", player.height, "+" ,player.y, ">" ,ship. y);
-        }
-
         if (player.x < ship.x + ship.width && 
             player.x + player.width > ship.x && 
             player.y + 480 < ship.y + ship.height &&
             player.height + player.y > ship. y) {
-                console.log("99999999999 SUPER TRUE");
                 return true;
         } else {
             return false;
@@ -201,9 +198,9 @@ class Play extends Phaser.Scene{
         // temporarily hide ship
         //ship.alpha = 0;
         // create explosion sprite at ship's position
-        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
+        let boom = this.add.sprite(ship.x, ship.y, 'bubbles').setOrigin(0, 0);
         ship.reset();
-        boom.anims.play('explode');             // play explode animation
+        boom.anims.play('bubble');             // play explode animation
         boom.on('animationcomplete', () => {    // callback after anim completes
           //ship.reset();                         // reset ship position
           //ship.alpha = 1;                       // make ship visible again

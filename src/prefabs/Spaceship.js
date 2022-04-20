@@ -9,9 +9,9 @@ class Spaceship extends Phaser.GameObjects.Sprite{
         this.flipX = flip;
         if(this.texture.key == "fish2"){
 
-            this.scale /= 2;
-            this.height /= 2;
-            this.width /=2;
+            this.scale /= 1.5;
+            this.height /= 1.5;
+            this.width /=1.5;
         }
 
     }

@@ -18,8 +18,8 @@ class Menu extends Phaser.Scene{
         this.sand = this.add.tileSprite(0, 430, 640, 50, 'sand').setOrigin(0, 0);
 
         let menuConfig = {
-            fontFamily: 'Arial',
-            fontSize: '35px',
+            fontFamily: 'Mermaid Astramadea',
+            fontSize: '40px',
             backgroundColor: '#F3B141',
             color: '#843605',
             align: 'left',

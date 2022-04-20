@@ -10,13 +10,6 @@ class Player extends Phaser.GameObjects.Sprite {
         this.left = left;
         this.right = right;
         this.down = down;
-
-        //this.width *= 0.06;
-        //this.height *= 0.06;
-        console.log(this.width);
-        // if(this.texture.key == "hook2"){
-        //     this.flipX = true;
-        // }
     }
 
     update(){
@@ -44,7 +37,6 @@ class Player extends Phaser.GameObjects.Sprite {
          if(this.y >= borderPadding *2){
              this.isFiring = false;
              this.reset();
-             //this.y = game.config.height - borderUISize - borderPadding;
          }
     }
 

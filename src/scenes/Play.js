@@ -46,7 +46,7 @@ class Play extends Phaser.Scene{
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*6, 'fish1', 0, 10, game.settings.spaceshipSpeed, false).setOrigin(0, 0);
         this.ship02 = new Spaceship(this, 0 - borderUISize * 3, borderUISize*8 + borderPadding*2, 'fish1', 0, 20, game.settings.spaceshipSpeed +0.5, true).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*10 + borderPadding*4, 'fish1', 0, 30, game.settings.spaceshipSpeed+1, false).setOrigin(0,0);
-        this.ship04 = new Spaceship(this, 0 - borderUISize * 3, borderUISize*11 + borderPadding*6, 'fish2', 0, 100, game.settings.spaceshipSpeed +3, true).setOrigin(0,0);
+        this.ship04 = new Spaceship(this, 0 - borderUISize * 3, borderUISize*11 + borderPadding*6, 'fish2', 0, 100, game.settings.spaceshipSpeed +2, true).setOrigin(0,0);
 
 
 
@@ -64,7 +64,7 @@ class Play extends Phaser.Scene{
 
         //display score
         let scoreConfig = {
-            fontFamily: 'Arial',
+            fontFamily: 'Mermaid Astramadea',
             fontSize: '33px',
             //backgroundColor: '#f6d265',
             stroke: '#000000',
@@ -79,7 +79,7 @@ class Play extends Phaser.Scene{
         }
 
         let endConfig = {
-            fontFamily: 'Arial',
+            fontFamily: 'Mermaid Astramadea',
             fontSize: '28px',
             backgroundColor: '#f6d265',
             color: '#843605',
@@ -132,7 +132,6 @@ class Play extends Phaser.Scene{
         }
 
         // Update if not gameover
-        //this.starfield.tilePositionX -= 4;
         this.water.tilePositionX -= 0.5;
         this.sand.tilePositionX -= 1;
 
@@ -195,15 +194,11 @@ class Play extends Phaser.Scene{
     }
 
     shipExplode(player,ship) {
-        // temporarily hide ship
-        //ship.alpha = 0;
         // create explosion sprite at ship's position
         let boom = this.add.sprite(ship.x, ship.y, 'bubbles').setOrigin(0, 0);
         ship.reset();
         boom.anims.play('bubble');             // play explode animation
         boom.on('animationcomplete', () => {    // callback after anim completes
-          //ship.reset();                         // reset ship position
-          //ship.alpha = 1;                       // make ship visible again
           boom.destroy();                       // remove explosion sprite
         });
 
